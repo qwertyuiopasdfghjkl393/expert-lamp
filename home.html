@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Earnings Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1877f2;
+            --primary-dark: #166fe5;
+            --secondary: #42b72a;
+            --secondary-dark: #36a420;
+            --text: #1c1e21;
+            --text-light: #606770;
+            --border: #dddfe2;
+            --background: #f0f2f5;
+            --card-bg: #ffffff;
+            --warning-bg: #fff8e1;
+            --warning-border: #ffc107;
+            --warning-text: #5c3d00;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 580px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px 25px;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .logo i {
+            font-size: 26px;
+        }
+        
+        .user-profile {
+            position: absolute;
+            right: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .user-profile:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        .earnings-container {
+            background-color: var(--card-bg);
+            border-radius: 0 0 12px 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+        
+        .balance {
+            text-align: center;
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .balance-title {
+            font-size⁶: 16px;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+        
+        .balance-amount {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        .balance-currency {
+            font-size: 24px;
+            opacity: 0.8;
+        }
+        
+        .earnings-list {
+            margin-bottom: 15px;
+        }
+        
+        .earnings-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+        
+        .earnings-item:last-child {
+            border-bottom: none;
+        }
+        
+        .earnings-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .earnings-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background-color: rgba(24, 119, 242, 0.1);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .earnings-details {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .earnings-label {
+            color: var(--text);
+            font-weight: 500;
+            font-size: 15px;
+        }
+        
+        .earnings-description {
+            color: var(--text-light);
+            font-size: 13px;
+            margin-top: 2px;
+        }
+        
+        .earnings-amount {
+            font-weight: 600;
+            color: var(--text);
+            font-size: 16px;
+        }
+        
+        .total-earnings {
+            display: flex;
+            justify-content: space-between;
+            padding: 18px 0;
+            font-size: 18px;
+            font-weight: 600;
+            border-top: 2px solid var(--border);
+            margin-top: 15px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+        
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(24, 119, 242, 0.3);
+        }
+        
+        .btn-success {
+            background-color: var(--secondary);
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background-color: var(--secondary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(66, 183, 42, 0.3);
+        }
+        
+        .claim-note {
+            background-color: var(--warning-bg);
+            padding: 18px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 14px;
+            color: var(--warning-text);
+            border-left: 4px solid var(--warning-border);
+        }
+        
+        .claim-note p {
+            margin-bottom: 12px;
+            line-height: 1.5;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal h3 {
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+        
+        .modal p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .modal-btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .modal-btn-secondary {
+            background-color: #e4e6eb;
+            color: var(--text);
+        }
+        
+        .modal-btn-secondary:hover {
+            background-color: #d8dadf;
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+        }
+        
+        .progress-text {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #e4e6eb;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            border-radius: 4px;
+            width: 65%;
+            transition: width 0.5s ease;
+        }
+        
+        @media (max-width: 480px) {
+            .balance-amount {
+                font-size: 36px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+            
+            .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fab fa-facebook-square"></i>
+                <span>Earnings Dashboard</span>
+            </div>
+            <div class="user-profile">
+                <i class="fas fa-user"></i>
+            </div>
+        </header>
+        
+        <div class="earnings-container">
+            <div class="balance">
+                <div class="balance-title">Available Balance</div>
+                <div class="balance-amount">
+                    <span class="balance-currency">₦</span>
+                    <span>19.500</span>
+                </div>
+            </div>
+            
+            <div class="progress-container">
+                <div class="progress-text">
+                    <span>Earnings Progress</span>
+                    <span>65%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="earnings-list">
+                <div class="earnings-item">
+                    <div class="earnings-info">
+                        <div class="earnings-icon">
+                            <i class="fas fa-comment"></i>
+                        </div>
+                        <div class="earnings-details">
+                            <span class="earnings-label">Facebook Comments</span>
+                            <span class="earnings-description">50 comments required</span>
+                        </div>
+                    </div>
+                    <span class="earnings-amount">₦7,000</span>
+                </div>
+                <div class="earnings-item">
+                    <div class="earnings-info">
+                        <div class="earnings-icon">
+                            <i class="fas fa-share"></i>
+                        </div>
+                        <div class="earnings-details">
+                            <span class="earnings-label">Facebook Shares</span>
+                            <span class="earnings-description">20 shares required</span>
+                        </div>
+                    </div>
+                    <span class="earnings-amount">₦2,500</span>
+                </div>
+                <div class="earnings-item">
+                    <div class="earnings-info">
+                        <div class="earnings-icon">
+                            <i class="fas fa-eye"></i>
+                        </div>
+                        <div class="earnings-details">
+                            <span class="earnings-label">Facebook Views</span>
+                            <span class="earnings-description">1,000 views required</span>
+                        </div>
+                    </div>
+                    <span class="earnings-amount">₦5,000</span>
+                </div>
+                <div class="earnings-item">
+                    <div class="earnings-info">
+                        <div class="earnings-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <div class="earnings-details">
+                            <span class="earnings-label">Facebook Active</span>
+                            <span class="earnings-description">7 days active</span>
+                        </div>
+                    </div>
+                    <span class="earnings-amount">₦5,000</span>
+                </div>
+            </div>
+            
+            <div class="total-earnings">
+                <span>Total Earnings per day:</span>
+                <span id="totalEarnings">₦6,000</span>
+            </div>
+            
+            <div class="action-buttons">
+                <a href="deposit.html" class="btn btn-primary">
+                    <i class="fas fa-plus-circle"></i>
+                    Deposit
+                </a>
+                <a href="withdraw.html" class="btn btn-primary">
+                    <i class="fas fa-wallet"></i>
+                    Withdraw
+                </a>
+            </div>
+            
+            <div class="claim-note">
+                <p><strong>Important:</strong> A minimum deposit of ₦1000 is required to unlock and claim all your earnings. Complete your tasks and make a deposit to withdraw your money.</p>
+                <button id="claimBtn" class="btn btn-success">
+                    <i class="fas fa-gift"></i>
+                    Claim All Earnings
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="depositModal" class="modal">
+        <div class="modal-content">
+            <h3>Deposit Required</h3>
+            <p>To claim your earnings, you need to make a minimum deposit of ₦1000. This helps verify your account and enables withdrawal of your funds.</p>
+            <div class="modal-buttons">
+                <button id="goToDeposit" class="modal-btn modal-btn-primary">
+                    <i class="fas fa-arrow-right"></i>
+                    Go to Deposit
+                </button>
+                <button id="cancelModal" class="modal-btn modal-btn-secondary">
+                    <i class="fas fa-times"></i>
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const claimBtn = document.getElementById('claimBtn');
+            const depositModal = document.getElementById('depositModal');
+            const goToDeposit = document.getElementById('goToDeposit');
+            const cancelModal = document.getElementById('cancelModal');
+            
+            // Calculate total earnings (in a real app, this would come from an API)
+            const earningsItems = document.querySelectorAll('.earnings-amount');
+            let total = 0;
+            
+            earningsItems.forEach(item => {
+                const amount = parseFloat(item.textContent.replace('₦', '').replace(',', ''));
+                total += amount;
+            });
+            
+            // Format total with commas
+            document.getElementById('totalEarnings').textContent = '₦' + total.toLocaleString('en-US');
+            
+            claimBtn.addEventListener('click', function() {
+                // Show modal requiring deposit
+                depositModal.classList.add('active');
+            });
+            
+            goToDeposit.addEventListener('click', function() {
+                // Redirect to deposit page
+                window.location.href = 'deposit.html';
+            });
+            
+            cancelModal.addEventListener('click', function() {
+                // Hide modal
+                depositModal.classList.remove('active');
+            });
+            
+            // Close modal when clicking outside
+            depositModal.addEventListener('click', function(e) {
+                if (e.target === depositModal) {
+                    depositModal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

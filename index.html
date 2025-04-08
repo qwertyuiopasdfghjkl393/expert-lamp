@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Facebook Earnings - Get Started</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #dddfe2;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1877f2;
+            text-decoration: none;
+        }
+        
+        .login-btn {
+            background-color: #1877f2;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .hero {
+            display: flex;
+            align-items: center;
+            padding: 60px 0;
+        }
+        
+        .hero-content {
+            flex: 1;
+            padding-right: 40px;
+        }
+        
+        .hero-image {
+            flex: 1;
+        }
+        
+        .hero-image img {
+            width: 100%;
+            max-width: 500px;
+        }
+        
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #1877f2;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            margin-bottom: 30px;
+            color: #1c1e21;
+        }
+        
+        .cta-btn {
+            background-color: #42b72a;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .secondary-btn {
+            background-color: transparent;
+            color: #1877f2;
+            border: 1px solid #1877f2;
+        }
+        
+        .features {
+            display: flex;
+            justify-content: space-between;
+            padding: 60px 0;
+        }
+        
+        .feature-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 30%;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 40px;
+            color: #1877f2;
+            margin-bottom: 20px;
+        }
+        
+        .feature-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            border-top: 1px solid #dddfe2;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 40px;
+            }
+            
+            .features {
+                flex-direction: column;
+            }
+            
+            .feature-card {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="logo">FB Earnings</a>
+            <a href="login.html" class="login-btn">Log In</a>
+        </header>
+        
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Start Earning on Facebook</h1>
+                <p class="subtitle">Monetize your Facebook presence with our powerful earning platform</p>
+                <div>
+                    <a href="signup.html" class="cta-btn">Get Started</a>
+                    <button class="cta-btn secondary-btn">Learn More</button>
+                </div>
+            </div>
+            <div class="hero-image">
+            </div>
+        </section>
+        
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">💰</div>
+                <h3 class="feature-title">Multiple Earning Methods</h3>
+                <p>Earn through ads, affiliate marketing, sponsored content, and more directly on your Facebook profile.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">📊</div>
+                <h3 class="feature-title">Real-time Analytics</h3>
+                <p>Track your earnings, engagement, and performance with our comprehensive dashboard.</p>
+            </div>
+            
+            <div class="feature-card">
+                <div class="feature-icon">🚀</div>
+                <h3 class="feature-title">Growth Tools</h3>
+                <p>Get access to tools and resources to help grow your Facebook audience and maximize earnings.</p>
+            </div>
+        </section>
+        
+        <footer>
+            <p>© 2023 FB Earnings Platform. All rights reserved.</p>
+        </footer>
+    </div>
+    
+    <script>
+        // Basic functionality for buttons that aren't links
+        document.querySelector('.secondary-btn').addEventListener('click', function() {
+            alert('Redirecting to learn more page...');
+            // In a real app, you would use:
+            // window.location.href = '/learn-more';
+        });
+    </script>
+</body>
+</html>

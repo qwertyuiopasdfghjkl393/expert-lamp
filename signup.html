@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up - Facebook Earnings</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1877f2;
+            --primary-dark: #166fe5;
+            --secondary: #42b72a;
+            --secondary-dark: #36a420;
+            --text: #1c1e21;
+            --text-light: #606770;
+            --border: #dddfe2;
+            --background: #f0f2f5;
+            --card-bg: #ffffff;
+            --error: #e74c3c;
+            --success: #2ecc71;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background-image: radial-gradient(circle at 10% 20%, rgba(24, 119, 242, 0.05) 0%, rgba(24, 119, 242, 0.05) 90%);
+        }
+        
+        .signup-container {
+            background-color: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 420px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .signup-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 25px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .signup-header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .logo i {
+            font-size: 28px;
+        }
+        
+        .signup-header p {
+            opacity: 0.9;
+            font-size: 15px;
+        }
+        
+        .signup-form {
+            padding: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text);
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 15px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.2);
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+        
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            cursor: pointer;
+        }
+        
+        .error-message {
+            color: var(--error);
+            font-size: 13px;
+            margin-top: 5px;
+            display: none;
+        }
+        
+        .btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 25px 0;
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .divider::before,
+        .divider::after {
+            content: "";
+            flex: 1;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .divider::before {
+            margin-right: 15px;
+        }
+        
+        .divider::after {
+            margin-left: 15px;
+        }
+        
+        .login-link {
+            text-align: center;
+            font-size: 15px;
+            color: var(--text-light);
+        }
+        
+        .login-link a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+        
+        .success-message {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: var(--success);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .terms {
+            font-size: 13px;
+            color: var(--text-light);
+            text-align: center;
+            margin-top: 20px;
+            line-height: 1.5;
+        }
+        
+        .terms a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .terms a:hover {
+            text-decoration: underline;
+        }
+        
+        @media (max-width: 480px) {
+            .signup-container {
+                border-radius: 12px;
+            }
+            
+            .signup-header {
+                padding: 20px;
+            }
+            
+            .signup-form {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="signup-container">
+        <div class="signup-header">
+            <div class="logo">
+                <i class="fab fa-facebook-square"></i>
+                <span>Facebook Earnings</span>
+            </div>
+            <p>Create your account to start earning</p>
+        </div>
+        
+        <div class="signup-form">
+            <div class="success-message" id="successMsg">
+                <i class="fas fa-check-circle"></i>
+                <span>Account created successfully! Redirecting...</span>
+            </div>
+            
+            <form id="signupForm">
+                <div class="form-group">
+                    <label for="fullname" class="form-label">Full Name</label>
+                    <div class="input-group">
+                        <i class="fas fa-user input-icon"></i>
+                        <input type="text" id="fullname" class="form-control" placeholder="Enter your full name" required>
+                    </div>
+                    <div class="error-message" id="nameError">Please enter your full name</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email" class="form-label">Email Address</label>
+                    <div class="input-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="email" class="form-control" placeholder="Enter your email" required>
+                    </div>
+                    <div class="error-message" id="emailError">Please enter a valid email address</div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="password" class="form-label">Password</label>
+                    <div class="input-group">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="password" class="form-control" placeholder="Create a password" required>
+                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                    </div>
+                    <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <i class="fas fa-user-plus"></i>
+                    Create Account
+                </button>
+            </form>
+            
+            <div class="divider">or</div>
+            
+            <div class="login-link">
+                Already have an account? <a href="login.html">Log in</a>
+            </div>
+            
+            <div class="terms">
+                By creating an account, you agree to our <a href="#">Terms of Service</a> and acknowledge our <a href="#">Privacy Policy</a>.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const signupForm = document.getElementById('signupForm');
+            const fullname = document.getElementById('fullname');
+            const email = document.getElementById('email');
+            const password = document.getElementById('password');
+            const togglePassword = document.getElementById('togglePassword');
+            const submitBtn = document.getElementById('submitBtn');
+            const successMsg = document.getElementById('successMsg');
+            const nameError = document.getElementById('nameError');
+            const emailError = document.getElementById('emailError');
+            const passwordError = document.getElementById('passwordError');
+            
+            // Toggle password visibility
+            togglePassword.addEventListener('click', function() {
+                const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+                password.setAttribute('type', type);
+                this.classList.toggle('fa-eye-slash');
+            });
+            
+            // Form validation
+            function validateForm() {
+                let isValid = true;
+                
+                // Name validation
+                if (fullname.value.trim() === '') {
+                    nameError.style.display = 'block';
+                    fullname.style.borderColor = 'var(--error)';
+                    isValid = false;
+                } else {
+                    nameError.style.display = 'none';
+                    fullname.style.borderColor = 'var(--border)';
+                }
+                
+                // Email validation
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email.value.trim())) {
+                    emailError.style.display = 'block';
+                    email.style.borderColor = 'var(--error)';
+                    isValid = false;
+                } else {
+                    emailError.style.display = 'none';
+                    email.style.borderColor = 'var(--border)';
+                }
+                
+                // Password validation
+                if (password.value.length < 6) {
+                    passwordError.style.display = 'block';
+                    password.style.borderColor = 'var(--error)';
+                    isValid = false;
+                } else {
+                    passwordError.style.display = 'none';
+                    password.style.borderColor = 'var(--border)';
+                }
+                
+                return isValid;
+            }
+            
+            // Form submission
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (validateForm()) {
+                    // Show loading state
+                    submitBtn.disabled = true;
+                    submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Creating Account...';
+                    
+                    // Simulate API call
+                    setTimeout(() => {
+                        // Show success message
+                        successMsg.style.display = 'flex';
+                        
+                        // Reset form
+                        submitBtn.disabled = false;
+                        submitBtn.innerHTML = '<i class="fas fa-user-plus"></i> Create Account';
+                        
+                        // Redirect after 3 seconds
+                        setTimeout(() => {
+                            window.location.href = 'home.html';
+                        }, 3000);
+                    }, 2000);
+                }
+            });
+            
+            // Real-time validation
+            fullname.addEventListener('input', function() {
+                if (this.value.trim() !== '') {
+                    nameError.style.display = 'none';
+                    this.style.borderColor = 'var(--border)';
+                }
+            });
+            
+            email.addEventListener('input', function() {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (emailRegex.test(this.value.trim())) {
+                    emailError.style.display = 'none';
+                    this.style.borderColor = 'var(--border)';
+                }
+            });
+            
+            password.addEventListener('input', function() {
+                if (this.value.length >= 6) {
+                    passwordError.style.display = 'none';
+                    this.style.borderColor = 'var(--border)';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

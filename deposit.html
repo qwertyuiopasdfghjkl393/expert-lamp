@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit Funds - Facebook Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #1877f2;
+            --primary-dark: #166fe5;
+            --secondary: #42b72a;
+            --secondary-dark: #36a420;
+            --text: #1c1e21;
+            --text-light: #606770;
+            --border: #dddfe2;
+            --background: #f0f2f5;
+            --card-bg: #ffffff;
+            --warning-bg: #fff8e1;
+            --warning-border: #ffc107;
+            --warning-text: #5c3d00;
+            --success-bg: #e8f5e9;
+            --success-border: #4caf50;
+            --success-text: #2e7d32;
+            --info-bg: #e3f2fd;
+            --info-border: #2196f3;
+            --info-text: #0d47a1;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 580px;
+            margin: 0 auto;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 18px 25px;
+            text-align: center;
+            border-radius: 12px 12px 0 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 25px;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            transform: rotate(30deg);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 22px;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .logo i {
+            font-size: 26px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: white;
+            text-decoration: none;
+        }
+        
+        .back-btn:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+        
+        .deposit-container {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 25px;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--primary);
+        }
+        
+        .payment-methods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        
+        .payment-method {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background-color: rgba(255,255,255,0.7);
+        }
+        
+        .payment-method:hover {
+            border-color: var(--primary);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .payment-method.active {
+            border-color: var(--primary);
+            background-color: rgba(24, 119, 242, 0.05);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(24, 119, 242, 0.2);
+        }
+        
+        .payment-icon {
+            font-size: 32px;
+            margin-bottom: 12px;
+            color: var(--primary);
+        }
+        
+        .payment-name {
+            font-weight: 600;
+            font-size: 15px;
+        }
+        
+        .account-card {
+            background: linear-gradient(135deg, rgba(24, 119, 242, 0.08), rgba(66, 183, 42, 0.08));
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s;
+        }
+        
+        .account-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .account-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .account-title {
+            font-weight: 600;
+            font-size: 18px;
+            color: var(--primary);
+        }
+        
+        .account-number {
+            font-size: 22px;
+            font-weight: 700;
+            margin: 10px 0;
+            letter-spacing: 1px;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .account-number i {
+            color: var(--primary);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .account-number i:hover {
+            transform: scale(1.1);
+        }
+        
+        .account-detail {
+            color: var(--text-light);
+            margin-bottom: 8px;
+            font-size: 15px;
+        }
+        
+        .account-note {
+            font-size: 14px;
+            color: var(--warning-text);
+            margin-top: 15px;
+            padding-top: 10px;
+            border-top: 1px dashed var(--border);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 600;
+            color: var(--text);
+            font-size: 16px;
+        }
+        
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(24, 119, 242, 0.2);
+        }
+        
+        .input-group {
+            position: relative;
+        }
+        
+        .input-group .form-control {
+            padding-left: 50px;
+        }
+        
+        .input-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 20px;
+        }
+        
+        .input-currency {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-weight: 600;
+            color: var(--text);
+        }
+        
+        .min-amount {
+            color: var(--text-light);
+            font-size: 14px;
+            margin-top: 8px;
+        }
+        
+        .file-upload {
+            position: relative;
+            overflow: hidden;
+            display: inline-block;
+            width: 100%;
+        }
+        
+        .file-upload-btn {
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .file-upload-btn:hover {
+            border-color: var(--primary);
+            background-color: rgba(24, 119, 242, 0.05);
+        }
+        
+        .file-upload-input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+        }
+        
+        .file-upload-icon {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .file-upload-text {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .file-upload-hint {
+            color: var(--text-light);
+            font-size: 14px;
+        }
+        
+        .file-preview {
+            margin-top: 15px;
+            display: none;
+        }
+        
+        .file-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+        
+        .btn {
+            padding: 16px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+        }
+        
+        .btn-primary:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+        
+        .alert {
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            display: flex;
+            align-items: flex-start;
+            gap: 15px;
+        }
+        
+        .alert-icon {
+            font-size: 24px;
+            flex-shrink: 0;
+        }
+        
+        .alert-content {
+            flex-grow: 1;
+        }
+        
+        .alert-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .alert-info {
+            background-color: var(--info-bg);
+            color: var(--info-text);
+            border-left: 4px solid var(--info-border);
+        }
+        
+        .alert-success {
+            background-color: var(--success-bg);
+            color: var(--success-text);
+            border-left: 4px solid var(--success-border);
+            display: none;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        }
+        
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+        
+        .modal h3 {
+            margin-bottom: 15px;
+            color: var(--text);
+        }
+        
+        .modal p {
+            color: var(--text-light);
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .modal-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .modal-btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .modal-btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        @media (max-width: 480px) {
+            .payment-methods {
+                grid-template-columns: 1fr;
+            }
+            
+            .account-number {
+                font-size: 18px;
+            }
+            
+            .section-title {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <div class="logo">
+                <i class="fas fa-money-bill-wave"></i>
+                <span>Deposit Funds</span>
+            </div>
+        </header>
+        
+        <div class="deposit-container">
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle alert-icon"></i>
+                <div class="alert-content">
+                    <div class="alert-title">Important Deposit Information</div>
+                    <p>Minimum deposit: ₦1000. Deposits are processed within 1-3 business hours. Always include your username as payment reference.</p>
+                </div>
+            </div>
+            
+            <h3 class="section-title">
+                <i class="fas fa-wallet"></i>
+                Select Payment Method
+            </h3>
+            
+            <div class="payment-methods">
+                <div class="payment-method active" data-method="bank">
+                    <i class="fas fa-university payment-icon"></i>
+                    <div class="payment-name">Bank Transfer</div>
+                </div>
+                <div class="payment-method" data-method="palmPay">
+                    <i class="fas fa-mobile-alt payment-icon"></i>
+                    <div class="payment-name">PalmPay</div>
+                </div>
+                <div class="payment-method" data-method="paystack">
+                    <i class="fas fa-credit-card payment-icon"></i>
+                    <div class="payment-name">Paystack</div>
+                </div>
+            </div>
+            
+            <div id="bankTransferSection">
+                <h3 class="section-title">
+                    <i class="fas fa-university"></i>
+                    Bank Transfer Details
+                </h3>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-title">Account 1</div>
+                        <div class="account-badge">Recommended</div>
+                    </div>
+                    <div class="account-number" id="account1">
+                        6621097502
+                        <i class="far fa-copy" onclick="copyToClipboard('account1')"></i>
+                    </div>
+                    <div class="account-detail">Account Name: PalmPay</div>
+                 
+                    <div class="account-note">
+                        <i class="fas fa-exclamation-circle"></i> Include your username as payment reference
+                    </div>
+                </div>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-title">Account 2</div>
+                    </div>
+                    <div class="account-number" id="account2">
+                        6020625780
+                        <i class="far fa-copy" onclick="copyToClipboard('account2')"></i>
+                    </div>
+                    <div class="account-detail">Account Name: Safe Haven MFB</div>
+                    <div class="account-note">
+                        <i class="fas fa-exclamation-circle"></i> Include your username as payment reference
+                    </div>
+                </div>
+            </div>
+            
+            <div id="mobilePaymentSection" class="hidden">
+                <h3 class="section-title" id="mobilePaymentTitle">
+                    <i class="fas fa-mobile-alt"></i>
+                    Mobile Payment Details
+                </h3>
+                
+                <div class="account-card">
+                    <div class="account-header">
+                        <div class="account-title" id="mobileAccountTitle">PalmPay Number</div>
+                    </div>
+                    <div class="account-number" id="mobileAccount">
+                        08091234567
+                        <i class="far fa-copy" onclick="copyToClipboard('mobileAccount')"></i>
+                    </div>
+                    <div class="account-detail">Account Name: Facebook Earnings</div>
+                    <div class="account-note">
+                        <i class="fas fa-exclamation-circle"></i> Send payment and upload proof below
+                    </div>
+                </div>
+            </div>
+            
+            <form id="depositForm">
+                <div class="form-group">
+                    <label for="amount" class="form-label">Deposit Amount (₦)</label>
+                    <div class="input-group">
+                        <span class="input-currency">₦</span>
+                        <input type="number" id="amount" class="form-control" placeholder="Enter amount" min="1000" required>
+                    </div>
+                    <div class="min-amount">Minimum deposit amount: ₦1000</div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">Payment Proof</label>
+                    <div class="file-upload">
+                        <div class="file-upload-btn">
+                            <i class="fas fa-cloud-upload-alt file-upload-icon"></i>
+                            <div class="file-upload-text">Upload Payment Receipt</div>
+                            <div class="file-upload-hint">PNG, JPG or PDF (Max 5MB)</div>
+                            <input type="file" id="proof" class="file-upload-input" accept="image/*,.pdf" required>
+                        </div>
+                    </div>
+                    <div class="file-preview" id="filePreview">
+                        <img id="previewImage" src="#" alt="Preview">
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary" id="submitBtn" disabled>
+                    <i class="fas fa-paper-plane"></i>
+                    Submit Deposit
+                </button>
+            </form>
+            
+            <div class="alert alert-success" id="successAlert">
+                <i class="fas fa-check-circle alert-icon"></i>
+                <div class="alert-content">
+                    <div class="alert-title">Deposit Submitted Successfully!</div>
+                    <p>Your deposit of ₦<span id="depositAmount">0</span> is being processed. We'll notify you once completed.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="successModal" class="modal">
+        <div class="modal-content">
+            <div style="font-size: 60px; color: var(--success-text); margin-bottom: 15px;">
+                <i class="fas fa-check-circle"></i>
+            </div>
+            <h3>Deposit Submitted!</h3>
+            <p>Your deposit request of <strong>₦<span id="successAmount">0</span></strong> has been received. We'll verify and credit your account within 1-3 business hours.</p>
+            <div class="modal-buttons">
+                <button id="closeSuccessModal" class="modal-btn modal-btn-primary">
+                    <i class="fas fa-check"></i>
+                    Done
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Payment method selection
+            const paymentMethods = document.querySelectorAll('.payment-method');
+            const bankTransferSection = document.getElementById('bankTransferSection');
+            const mobilePaymentSection = document.getElementById('mobilePaymentSection');
+            const mobilePaymentTitle = document.getElementById('mobilePaymentTitle');
+            const mobileAccountTitle = document.getElementById('mobileAccountTitle');
+            const mobileAccount = document.getElementById('mobileAccount');
+            
+            paymentMethods.forEach(method => {
+                method.addEventListener('click', function() {
+                    paymentMethods.forEach(m => m.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const methodType = this.dataset.method;
+                    
+                    if (methodType === 'bank') {
+                        bankTransferSection.classList.remove('hidden');
+                        mobilePaymentSection.classList.add('hidden');
+                    } else {
+                        bankTransferSection.classList.add('hidden');
+                        mobilePaymentSection.classList.remove('hidden');
+                        
+                        if (methodType === 'palmPay') {
+                            mobilePaymentTitle.innerHTML = '<i class="fas fa-mobile-alt"></i> PalmPay Details';
+                            mobileAccountTitle.textContent = 'PalmPay Number';
+                            mobileAccount.innerHTML = '6662040791<i class="far fa-copy" onclick="copyToClipboard(\'mobileAccount\')"></i>';
+                        } else if (methodType === 'paystack') {
+                            mobilePaymentTitle.innerHTML = '<i class="fas fa-credit-card"></i> Paystack Details';
+                            mobileAccountTitle.textContent = 'Paystack Number';
+                            mobileAccount.innerHTML = '9847317251<i class="far fa-copy" onclick="copyToClipboard(\'mobileAccount\')"></i>';
+                        }
+                    }
+                });
+            });
+            
+            // File upload preview
+            const proofInput = document.getElementById('proof');
+            const filePreview = document.getElementById('filePreview');
+            const previewImage = document.getElementById('previewImage');
+            
+            proofInput.addEventListener('change', function() {
+                if (this.files && this.files[0]) {
+                    const file = this.files[0];
+                    const reader = new FileReader();
+                    
+                    if (file.type.match('image.*')) {
+                        reader.onload = function(e) {
+                            previewImage.src = e.target.result;
+                            filePreview.style.display = 'block';
+                        }
+                        reader.readAsDataURL(file);
+                    } else {
+                        filePreview.style.display = 'none';
+                    }
+                    
+                    checkForm();
+                }
+            });
+            
+            // Form validation
+            const amountInput = document.getElementById('amount');
+            const submitBtn = document.getElementById('submitBtn');
+            const depositForm = document.getElementById('depositForm');
+            const successAlert = document.getElementById('successAlert');
+            const depositAmount = document.getElementById('depositAmount');
+            const successModal = document.getElementById('successModal');
+            const successAmount = document.getElementById('successAmount');
+            const closeSuccessModal = document.getElementById('closeSuccessModal');
+            
+            function checkForm() {
+                const amount = parseFloat(amountInput.value);
+                const hasProof = proofInput.files.length > 0;
+                
+                submitBtn.disabled = !(amount >= 1000 && hasProof);
+            }
+            
+            amountInput.addEventListener('input', checkForm);
+            
+            // Form submission
+            depositForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const amount = parseFloat(amountInput.value);
+                
+                // Show loading state
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
+                
+                // Simulate API call
+                setTimeout(() => {
+                    // Show success
+                    depositAmount.textContent = amount.toLocaleString();
+                    successAmount.textContent = amount.toLocaleString();
+                    
+                    // Show modal
+                    successModal.classList.add('active');
+                    
+                    // Reset form
+                    submitBtn.disabled = false;
+                    submitBtn.innerHTML = '<i class="fas fa-paper-plane"></i> Submit Deposit';
+                    depositForm.reset();
+                    filePreview.style.display = 'none';
+                }, 2000);
+            });
+            
+            closeSuccessModal.addEventListener('click', function() {
+                successModal.classList.remove('active');
+            });
+            
+            // Close modal when clicking outside
+            successModal.addEventListener('click', function(e) {
+                if (e.target === successModal) {
+                    successModal.classList.remove('active');
+                }
+            });
+        });
+        
+        // Copy to clipboard function
+        function copyToClipboard(elementId) {
+            const element = document.getElementById(elementId);
+            const text = element.childNodes[0].textContent.trim();
+            
+            navigator.clipboard.writeText(text).then(() => {
+                // Show copied feedback
+                const icon = element.querySelector('i');
+                icon.classList.remove('fa-copy');
+                icon.classList.add('fa-check');
+                
+                setTimeout(() => {
+                    icon.classList.remove('fa-check');
+                    icon.classList.add('fa-copy');
+                }, 2000);
+            });
+        }
+    </script>
+</body>
+</html>
